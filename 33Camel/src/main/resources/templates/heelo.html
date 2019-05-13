@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+
+<script>
+
+    function fun(){
+
+        $.ajax({
+            url: "/emp",
+            type: "GET"
+
+            success: function(result){
+                $.each(result.data){
+                    function(i,emp){
+                        var user =emp.getId()+" "+emp.getName();
+                        $("#ab").append(user);
+                    }
+                }
+            }
+        })
+    }
+
+    $("form").submit(function(){
+
+        var user= {
+            id=$("#id").val(),
+            name=$("#name").val(),
+            age=$("#age").val()
+        }
+
+        $.ajax({
+
+            url: "/emp",
+            type: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(user)
+
+            success: function(result){
+                $("#ab").html(result.data.name)
+            }
+
+        })
+
+    })
+
+    function fun2(){
+
+        cont http =XMLHttpRequest();
+        const url = "http://localhost:8080/emp";
+
+        http.onReadyStateChange(){
+            ab.innerHTMl= result.data
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

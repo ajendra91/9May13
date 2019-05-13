@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1 id="ab"></h1>
+<button onclick="fun()">click getAll</button>
+<button onclick="fun3()">click getAll</button>
+<button onclick="fun4()">click post</button>
+
+<form onsubmit="fun4()">
+    <input id="id">
+    <input id="name">
+    <input id="age">
+    <button>Submit</button>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+function fun(){
+
+        $.ajax({
+            url: "http://rest-service.guides.spring.io/greeting"
+        }).then(function(data) {
+           $('#ab').append(data.id);
+           $('#ab').append(data.content);
+        });
+
+
+       	$.ajax({
+					type: "GET",
+					url: "/emp",
+					success: function (result){
+						$.each(result.data,
+							function(i, emp) {
+								var user = "Id"+ emp.id+ "Name" + emp.name;
+								$('#ab').append(user)
+						});
+					}
+				})
+}
+        $("form").submit(function(){
+                var user={
+                    id: $("#id").val(),
+                    name: $("#name").val(),
+                    age: $("#age").val()
+                }
+                $.ajax({
+                    type: "Post",
+                    url: "/emp",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify(user),
+                    success:function(result){
+                        $("#ab").html(result.data.name);
+                    }
+                })
+
+        })
+
+        function fun3(){
+
+            const http = new XMLHttpRequest();
+            const url ="http://localhost:9090/getAll";
+            http.open("GET",url);
+            http.send();
+            http.onreadystatechange=(e)=>{
+                ab.innerHTML = http.responseText;
+            }
+
+        }
+
+        function fun4(){
+
+             var user={
+                id: 4,
+                name: 'java',
+                age: '44'
+             }
+
+            const http=new XMLHttpRequest();
+            const url="http://localhost:9090/emp";
+            http.onreadystatechange=(e)=>{
+                if(this.readyState==0 && this.status==200){
+                    ab.innerHTML=this.responseText;
+                }
+            }
+
+            http.open("Post",url,true);
+            http.setRequestHeader("content-type","application/json");
+            http.send(JSON.stringify(user));
+
+
+        }
+
+
+
+
+
+</script>
+
+</body>
+</html>
